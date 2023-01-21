@@ -32,7 +32,7 @@ void do_operations(int sockfd);
 void interruption_handler(int n);
 
 int main(void) {
-    
+
     // Struttura dati del server
     SA_IN server_addr;
 
@@ -40,18 +40,18 @@ int main(void) {
     signal(SIGINT, interruption_handler);
 
     // Creiamo la socket
-    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         perror("Creazione del socket fallita");
         exit(EXIT_FAILURE);
     }
 
     // Assegnamo TIPO, IP e PORTA
-    server_addr.sin_family      = AF_INET;
+    server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server_addr.sin_port        = htons(PORT);
+    server_addr.sin_port = htons(PORT);
 
     // Adesso ci colleghiamo con il server
-    if(connect(sockfd, (SA *)&server_addr, sizeof(server_addr)) != 0) {
+    if (connect(sockfd, (SA *) &server_addr, sizeof(server_addr)) != 0) {
         perror("Connessione con il server fallita");
         exit(EXIT_FAILURE);
     }
@@ -69,47 +69,48 @@ int main(void) {
 
 // Funzione che gestisce i segnali di interrupt
 void do_operations(int sockfd) {
-    
+
     Operation op;
     Response res;
 
-    while(TRUE) {
+    while (TRUE) {
 
         printf("Inserisci l'operatione da fare: ");
 
         // Controllo se la lettura è andata a buon fine
-        if(scanf("%f %c %f", &op.first_value, &op.operator, & op.second_value) != 3) {
-            
+        if (scanf("%f %c %f", &op.first_value, &op.operator, &op.second_value) != 3) {
+
             printf("Operazione non valida!\n");
 
             // Svuoto il stdin
-            while(getchar() != '\n');
+            while (getchar() != '\n');
 
             // Continuo ad eseguire il while
-	        continue;
-            
+            continue;
+
         }
 
-		if(op.second_value != 0 && (op.operator == '+' || op.operator == '-' || op.operator == '*' || op.operator == '/')) {
+        if (op.second_value != 0 &&
+            (op.operator == '+' || op.operator == '-' || op.operator == '*' || op.operator == '/')) {
 
-        	// Mando l'operazione da fare al server
-        	send(sockfd, &op, sizeof(Operation), 0);
+            // Mando l'operazione da fare al server
+            send(sockfd, &op, sizeof(Operation), 0);
 
-        	// Prendo la risposta dal server
-        	if(recv(sockfd, &res, sizeof(Response), 0) <= 0) {
-				printf("Il server ha chuso la connessione\n");
+            // Prendo la risposta dal server
+            if (recv(sockfd, &res, sizeof(Response), 0) <= 0) {
+                printf("Il server ha chuso la connessione\n");
 
-				return;
-			}
+                return;
+            }
 
-        	// Metto la risposta in out come risultato e tempo impiegato
-    		printf("Risultato: %f \t Tempo: %ld ns\n", res.result, res.invio - res.ricezione);
+            // Metto la risposta in out come risultato e tempo impiegato
+            printf("Risultato: %f \t Tempo: %ld ns\n", res.result, res.invio - res.ricezione);
 
-    	} else {
-			
-			printf("Operazione non valida!\n");
-		}
-	}
+        } else {
+
+            printf("Operazione non valida!\n");
+        }
+    }
 }
 
 // Funzione che gestisce i segnali di interrupt
@@ -120,10 +121,10 @@ void interruption_handler(int n) {
      * dato che la printf potrebbe non essere garantita
      */
     write(STDOUT_FILENO, "\nChiudo la connesione\n", 22);
-    
+
     // Chiudo la socket e finisco l'esecuzione del programma
     close(sockfd);
-    
+
     // Esco dall'esecuzione del programma
     exit(EXIT_SUCCESS);
 }

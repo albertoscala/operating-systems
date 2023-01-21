@@ -65,43 +65,43 @@ int main(void) {
     signal(SIGINT, interruption_handler);
 
     // socket creazione e controllo
-    if((server_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+    if ((server_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         perror("Creazione socket fallita\n");
         return EXIT_FAILURE;
     }
 
     // Assegno IP e PORTA
-    server_addr.sin_family      = AF_INET;
+    server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port        = htons(PORT);
+    server_addr.sin_port = htons(PORT);
 
     // Binding della nuova socket all'IP e controllo
-    if((bind(server_socket, (SA *)&server_addr, sizeof(server_addr))) != 0) {
+    if ((bind(server_socket, (SA *) &server_addr, sizeof(server_addr))) != 0) {
         perror("Abbinamento al socket fallito\n");
         return EXIT_FAILURE;
     }
 
     // Adesso metto il server in ascolto
-    if((listen(server_socket, SERVER_BACKLOG)) != 0) {
+    if ((listen(server_socket, SERVER_BACKLOG)) != 0) {
         perror("Ascolto fallito\n");
         return EXIT_FAILURE;
     }
 
     // Apertura file di log in append+ (se il file non esiste lo crea)
-    if((log_file = fopen("log", "a+")) == NULL) {
+    if ((log_file = fopen("log", "a+")) == NULL) {
         perror("Errore nell'apertura/creazione del file di log\n");
         return EXIT_FAILURE;
     }
 
     // Loop infinito per accettare nuovi client
-    while(TRUE) {   
+    while (TRUE) {
 
         printf("Server in ascolto\n");
 
         addr_size = sizeof(SA_IN);
 
         // Accetto il pacchetto mandato dal client
-        if((client_socket = accept(server_socket, (SA *)&client_addr, (socklen_t *)&addr_size)) < 0) {
+        if ((client_socket = accept(server_socket, (SA *) &client_addr, (socklen_t * ) & addr_size)) < 0) {
             perror("Il server non è riuscito ad accettare\n");
             return EXIT_FAILURE;
         }
@@ -109,7 +109,7 @@ int main(void) {
         printf("Client accettato!\n");
 
         pthread_t thread;
-        
+
         /**
          * Creo un puntatore a int per passare l'argomento alla funzione thread
          * questo perchè le pthread vuole che la funzione prenda in input un puntatore
@@ -141,10 +141,10 @@ void *exec_operations(void *pclient) {
     Operation op;
     Response res;
 
-    while(TRUE) {
+    while (TRUE) {
 
         // Riceviamo l'operazione da fare
-        if(recv(client, &op, sizeof(Operation), 0) <= 0) {
+        if (recv(client, &op, sizeof(Operation), 0) <= 0) {
             printf("Il client ha chiuso la connesione\n");
             close(client);
 
@@ -156,7 +156,7 @@ void *exec_operations(void *pclient) {
         res.ricezione = spec.tv_nsec;
 
         // Controlliamo che operazione dobbiamo fare
-        switch(op.operator) {
+        switch (op.operator) {
             case '+':
                 res.result = op.first_value + op.second_value;
                 break;
@@ -170,7 +170,7 @@ void *exec_operations(void *pclient) {
                 res.result = op.first_value / op.second_value;
                 break;
             default:
-				// Per sicurezza lo lascio
+                // Per sicurezza lo lascio
                 break;
         }
 
@@ -180,13 +180,13 @@ void *exec_operations(void *pclient) {
 
         // Inviamo la risposta al client
         send(client, &res, sizeof(Response), 0);
-    
+
         // Inizio zona critica
         pthread_mutex_lock(&lock);
-        
-		// Funzione per scrivere il file di log
+
+        // Funzione per scrivere il file di log
         fill_log(op, res, 0);
-    
+
         // Fine zona critica
         pthread_mutex_unlock(&lock);
     }
@@ -201,18 +201,20 @@ void fill_log(Operation op, Response res, int ip) {
     unsigned short port = ntohs(client_addr.sin_port);
 
     // Scrivo il log per il calcolo appena svolto
-    fprintf(log_file, "IP: %s:%d \nOperazione: %f %c %f \nRisultato: %f \nTempo inizio: %ld \tTempo fine: %ld \n/--------------------------------------------/\n", addr, port, op.first_value, op.operator, op.second_value, res.result, res.ricezione, res.invio);
+    fprintf(log_file,
+            "IP: %s:%d \nOperazione: %f %c %f \nRisultato: %f \nTempo inizio: %ld \tTempo fine: %ld \n/--------------------------------------------/\n",
+            addr, port, op.first_value, op.operator, op.second_value, res.result, res.ricezione, res.invio);
 }
 
 // Funzione per la gestione del segnale di interrupt
 void interruption_handler(int n) {
-    
+
     // Chiudo il file di log
     fclose(log_file);
 
     // Chiudo la connesione
     close(server_socket);
-    
+
     printf("\n");
 
     exit(EXIT_SUCCESS);
