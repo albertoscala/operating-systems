@@ -44,7 +44,7 @@ The program should work properly in the following cases:
   4. One of the two input files is empty
   5. The two input files have different lengths (test with 5 different pairs of files)
 
-## Homework 2 - System programming
+## [Homework 2 - System programming](https://github.com/albertoscala/operating-systems/tree/main/homework2)
 
 You are asked to realize, with the C language, a server program (henceforth server) and a
 client program (henceforth client) that meet the following specifications:
