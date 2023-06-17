@@ -46,48 +46,48 @@ The program should work properly in the following cases:
 
 ## Homework 2 - System programming
 
-Si chiede di realizzare, con il linguaggio C, un programma server (da ora in poi server) ed un
-programma client (da ora in poi client) che soddisfino le seguenti specifiche:
-1. Il server riceve richieste da client remoti mediante un socket TPC/IP
-2. Il client richiede che il server svolga un’operazione aritmetica e restituisca il risultato. Le
-richieste effettuate dai client contengono quindi un'operazione aritmetica ed i relativi
-operandi
-3. Il server calcola l’operazione richiesta e restituisce il risultato al client mediante socket
+You are asked to realize, with the C language, a server program (henceforth server) and a
+client program (henceforth client) that meet the following specifications:
+1. The server receives requests from remote clients via a TPC/IP socket
+2. The client requires the server to perform an arithmetic operation and return the result. The
+requests made by clients thus contain an arithmetic operation and its
+operands
+3. The server calculates the requested operation and returns the result to the client via socket
 TCP/IP.
-Ulteriori specifiche di dettaglio sono:
-4. Le operazioni che il server deve essere in grado di calcolare sono: **+**, **-**, <strong>*</strong>, **/**
-5. Il messaggio inviato dal client ha la seguente struttura
+Additional detail specifications are:
+4. The operations that the server must be able to calculate are: **+**, **-**, <strong>*</strong>, **/**
+5. The message sent by the client has the following structure
 
-<p align="center"><code>[operazione, Operando1, Operando2]</code></p>
+<p align="center"><code>[operation, Operand1, Operand2]</code></p>
 
-6. Il messaggio di risposta inviato dal server al client ha la seguente struttura
+6. The response message sent from the server to the client has the following structure
 
-<p align="center"><code>[timestamp ricezione richiesta, timestamp invio risposta, risultato operazione]</code></p>
+<p align="center"><code>[timestamp receiving request, timestamp sending response, operation result]</code></p>
 
-7. Il server deve essere in grado di gestire piu’ client concorrentemente, ovvero e’
-multithread
-8. Il server scrive in un log unico le operazioni effettuate, i risultati, i timestamp, l’id del
-client (ad es. Indirizzo IP). Deve essere garantito e gestito l’accesso concorrente al log.
-9. Il client deve consentire all’utente di inserire un'operazione mediante una stringa del tipo
-`Operando1 operazione Operando2`.
-10. Il client deve trasformare la stringa di input nel formato del messaggio specificato
-11. Quando il client riceve la risposta ad una richiesta, deve visualizzare il risultato
-dell’operazione e il tempo di servizio, ovvero `timestamp invio risposta - timestamp
-ricezione richiesta`
-12. Il client, una volta attivato, deve consentire di inserire quante operazioni l’utente
-desidera, fino ad esplicita terminazione del client stesso. L’utente, non puo’ richiedere
-una nuova operazione prima della ricezione della risposta alla richiesta precedente.
+7. The server must be able to handle multiple clients concurrently, i.e., it is
+multithreaded
+8. The server writes into a single log the operations performed, results, timestamps, id of the
+client (e.g., IP address). Concurrent access to the log must be guaranteed and managed.
+9. The client must allow the user to enter an operation by means of a string such as.
+`Operando1 operation Operando2`.
+10. The client must transform the input string into the specified message format
+11. When the client receives a response to a request, it must display the result
+of the operation and the service time, i.e. `timestamp sending response - timestamp
+receiving request`
+12. The client, once activated, must allow as many operations to be entered as the user
+wishes, until explicitly terminated by the client itself. The user, cannot request
+a new operation before receiving a response to the previous request.
 
-***NOTA**: non e’ richiesta l’implementazione di un'interfaccia grafica.*
+***NOTE**: implementation of a graphical user interface is not required.*
 
 ### Tests
 
-Il programma deve funzionare correttamente nei seguenti casi:
-- A + B, A - B, A * B, A/B dove A e B sono numeri reali diversi da 0 (calcolare almeno 5
-operazioni per ogni operatore)
-- A/B, dove B è’ zero.
-- La stringa di input fornita dall’utente non e’ correttamente formattata, ovvero uno degli
-operandi manca o non e’ un numero, l’operatore e’ assente o non e’ uno di quelli previsti
-- Il processo client non riesce a connettersi al processo server, perche’ ad esempio il
-server non è attivo
-- Il processo server termina inaspettatamente
+The program should work properly in the following cases:
+- A + B, A - B, A * B, A/B where A and B are real numbers other than 0 (calculate at least 5
+operations for each operator)
+- A/B, where B is' zero.
+- The user-supplied input string is not correctly formatted, i.e., one of the
+operands is missing or is not a number, the operator is absent or is not one of the provided
+- The client process can't connect to the server process because, for example, the
+server is not active
+- Server process terminates unexpectedly
