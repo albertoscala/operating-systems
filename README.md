@@ -1,6 +1,6 @@
 # Operating Systems
 
-## Homework 1 - Basic C programming
+## [Homework 1 - Basic C programming](https://github.com/albertoscala/operating-systems/blob/main/homework1/homework1.c)
 
 You are asked to make a program in C that calculates the differences between two text files. The specifications of the
 program are as follows:
