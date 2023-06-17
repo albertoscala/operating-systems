@@ -2,47 +2,47 @@
 
 ## Homework 1 - Basic C programming
 
-Si chiede di realizzare un programma in C che calcoli il diff tra due file di testo. Le specifiche del
-programma sono le seguenti:
-1. Il programma riceve in input il nome di due file di testo, da ora in poi denominati F1 e F2,
-ed una serie di opzioni, elencate al punto 3.
-2. Il programma, una volta avviato, carica in memoria i due file di testo in blocchi da 50
-righe, che vengono processate prima di leggere le successive righe del file.
-3. Il programma calcola il diff tra la riga i-esima del file F1 e la riga i-esima del file F2,
-restituendo un output che dipende dalle opzioni passate da riga di comando, e che sono
+You are asked to make a program in C that calculates the differences between two text files. The specifications of the
+program are as follows:
+1. The program receives as input the name of two text files, henceforth referred to as F1 and F2,
+and a set of options, listed in Step 3.
+2. The program, once started, loads the two text files into memory in blocks of 50
+lines, which are processed before reading the next lines of the file.
+3. The program calculates the diff between the i-th line of file F1 and the i-th line of file F2,
+returning an output that depends on the options passed from the command line, which are
 
-   - **-g**: se F1 ed F2 sono diversi in almeno una riga restituisce la stringa 
-     `F1 ed F2 sono differenti`. Al posto di F1 ed F2 vanno restituiti i nomi dei file elaborati
-   - **-s**: se F1 ed F2 sono uguali in tutte le righe restituisce la stringa `F1 ed F2 sono
-     uguali`. Al posto di F1 ed F2 vanno restituiti i nomi dei file elaborati
-   - **-d**: restituisce I numeri delle righe differenti
-   - **-u**: restituisce I numeri delle righe uguali
-   - **-v**: combinato con **–d** o **–u** stampa le righe che differiscono o che sono uguali. Il
-   formato di output deve essere<br><br>
+   - **-g**: if F1 and F2 are different in at least one line returns the string 
+     `F1 and F2 are different`. The names of the processed files should be returned instead of F1 and F2.
+   - **-s**: if F1 and F2 are equal in all rows returns the string `F1 and F2 are
+     equal`. The names of the processed files should be returned instead of F1 and F2.
+   - **-d**: returns the numbers of different rows
+   - **-u**: returns the numbers of the equal rows
+   - **-v**: combined with **-d** or **-u** prints lines that differ or are the same. The
+   output format must be<br><br>
    ```
-   #Riga, FILENAME F1: <riga di F1 che differisce o che e’ uguale>
-   #Riga, FILENAME F2: <riga di F2 che differisce o che e’ uguale>
+   #Line, FILENAME F1: <F1 line that differs or is the same>
+   #Line, FILENAME F2: <F2 line that differs or is the same>
    ```
-   - **-o NOME_FILE_OUTPUT**: ridireziona l’output su di un file di testo.
+   - **-o FILENAME_OUTPUT**: redirects the output to a text file.
 
-*Le opzioni –g e –s possono essere combinate; le opzioni –d e –u sono mutuamente
-esclusive; l’opzione -o può essere sempre utilizzata.*
+*The -g and -s options can be combined; the -d and -u options are mutually
+exclusive; the -o option can always be used.*
 
-4. Nel caso in cui i due file abbiano lunghezza diversa, nel caso vengano specificate le
-opzioni -d, –u e -v il confronto deve essere effettuato per il numero di righe contenuto nel
-file più piccolo (quello con il minor numero di righe).
+4. In case the two files have different lengths, in case the
+-d, -u and -v options, the comparison must be made for the number of rows contained in the
+smaller file (the one with the smallest number of rows).
 
 ### Tests
 
-Il programma deve funzionare correttamente nei seguenti casi:
+The program should work properly in the following cases:
 
-  1. L’input consiste di due file uguali (testare con 5 differenti coppie di file di lunghezza
-  maggiore e minore di 50 righe)
-  2. L’input consiste di due file differenti (testare con 5 differenti coppie di file di lunghezza
-  maggiore e minore di 50 righe)
-  3. Entrambi I file in input, o uno dei due, non esiste
-  4. Uno dei due file in input e’ vuoto
-  5. I due file di input hanno lunghezza diversa (testare con 5 differenti coppie di file)
+  1. The input consists of two equal rows (test with 5 different pairs of rows of lengths
+  greater and less than 50 rows)
+  2. The input consists of two different files (test with 5 different pairs of files of lengths
+  greater and less than 50 lines)
+  3. Both input files, or either one, does not exist
+  4. One of the two input files is empty
+  5. The two input files have different lengths (test with 5 different pairs of files)
 
 ## Homework 2 - System programming
 
